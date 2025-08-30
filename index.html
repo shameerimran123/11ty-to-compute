@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MultiTool PDF & Text Converter</title>
+  <!-- Google AdSense placeholder -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+<body>
+  <h1>MultiTool PDF & Text Converter</h1>
+
+  <!-- PDF ↔ Image Converter -->
+  <section>
+    <h2>PDF ↔ Image Converter</h2>
+    <input type="file" id="pdfInput">
+    <button onclick="alert('PDF ↔ Image conversion placeholder')">Convert</button>
+  </section>
+
+  <!-- Fiction PDF Generator -->
+  <section>
+    <h2>Fiction PDF Generator</h2>
+    <textarea id="storyText" placeholder="Write your story here"></textarea>
+    <button onclick="generatePDF()">Generate PDF</button>
+  </section>
+
+  <!-- Photo → Styled Text -->
+  <section>
+    <h2>Photo → Styled Text Converter</h2>
+    <input type="file" id="photoInput">
+    <button onclick="extractAndStyleText()">Extract & Style Text</button>
+    <pre id="styledOutput"></pre>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
+  <script>
+    function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const text = document.getElementById('storyText').value || "Your story here";
+      doc.text(text, 10, 10);
+      doc.save('story.pdf');
+    }
+
+    function extractAndStyleText() {
+      const file = document.getElementById('photoInput').files[0];
+      if (!file) return alert("Select an image");
+      Tesseract.recognize(file, 'eng')
+        .then(({ data: { text } }) => {
+          const styled = text.toUpperCase().split('').map(c => c+'📝').join('');
+          document.getElementById('styledOutput').innerText = styled;
+        });
+    }
+  </script>
+</body>
+</html>
